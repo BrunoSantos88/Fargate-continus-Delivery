@@ -1,26 +1,23 @@
 version: 0.2
 
 phases:
+  install:
+    runtime-versions:
+      docker: 18       
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 555527584255.dkr.ecr.us-east-1.amazonaws.com | docker login --username AWS --password-stdin 012345678910.dkr.ecr.us-west-2.amazonaws.com
-      - REPOSITORY_URI=555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${nginx-docker-delivery:=latest}
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 555527584255.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest .
-      - docker tag 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
+      - docker build -t nginx-docker-delivery .
+      - docker tag nginx-docker-delivery:latest 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
+      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:2.0
   post_build:
     commands:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
-      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
-      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:nginx-docker-delivery
       - echo Writing image definitions file...
       - printf '[{"name":"nginx-docker-delivery","imageUri":"%s"}]' 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:nginx-docker-delivery > imagedefinitions.json
 artifacts:
