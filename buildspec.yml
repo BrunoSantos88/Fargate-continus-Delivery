@@ -13,7 +13,7 @@ phases:
     commands:
       - docker build -t nginx-docker-delivery .
       - docker tag nginx-docker-delivery:latest 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
-      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:2.0
+      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
   post_build:
     commands:
       - echo Build completed on `date`
