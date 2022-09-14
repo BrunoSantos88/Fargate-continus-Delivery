@@ -3,7 +3,7 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      docker: 18       
+      docker: 20      
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
@@ -11,7 +11,7 @@ phases:
       - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 555527584255.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - docker build -t 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery .
+      - docker build -t nginx-docker-delivery .
       - docker tag nginx-docker-delivery:latest 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
       - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
   post_build:
