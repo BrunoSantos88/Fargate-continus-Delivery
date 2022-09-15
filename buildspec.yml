@@ -12,7 +12,7 @@ phases:
       - docker --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
+      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c latest)
   build:
     commands:
       - echo Build started on `date`
