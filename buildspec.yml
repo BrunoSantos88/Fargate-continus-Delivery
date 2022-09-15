@@ -8,7 +8,7 @@ phases:
     commands:
       - echo Logging in to Amazon ECR.....
       - aws --version
-      - node --versio
+      - node --version
       - docker --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery
