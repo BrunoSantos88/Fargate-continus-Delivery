@@ -12,7 +12,7 @@ phases:
       - docker --version
       - $(aws ecr get-login --region $AWS_DEFAULT_REGION --no-include-email)
       - REPOSITORY_URI=555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery
-      - IMAGE_TAG=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c latest)
+      - IMAGE_TAG=nginx-docker-delivery | cut -c latest)
   build:
     commands:
       - echo Build started on `date`
@@ -24,6 +24,6 @@ phases:
       - echo Pushing the Docker images...
       - docker push $REPOSITORY_URI:$IMAGE_TAG
       - echo Writing image definitions file...
-      - printf '[{"name":"nginx-docker-delivery","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
+      - printf '[{"name":"nginx-docker-delivery","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG:latest> imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
