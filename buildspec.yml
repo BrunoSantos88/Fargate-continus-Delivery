@@ -3,15 +3,12 @@ version: 0.2
 phases:
   install:
     runtime-versions:
-      nodejs: 16
+      nodejs: 12
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region <your-region> | docker login --username AWS --password-stdin <account-id>.dkr.ecr.<your-region>.amazonaws.com
-      - REPOSITORY_URI=555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery
-      - COMMIT_HASH=$(echo $CODEBUILD_RESOLVED_SOURCE_VERSION | cut -c 1-7)
-      - IMAGE_TAG=${nginx-docker-delivery:=latest}
+      - aws ecr get-login-password --region region us-east-1 | docker login --username AWS --password-stdin 555527584255.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
       - echo Build started on `date`
@@ -23,8 +20,5 @@ phases:
       - echo Build completed on `date`
       - echo Pushing the Docker images...
       - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest:latest
-      - docker push $REPOSITORY_URI:$IMAGE_TAG
-      - echo Writing image definitions file...
-      - printf '[{"name":"nginx-docker-delivery","imageUri":"%s"}]' $REPOSITORY_URI:$IMAGE_TAG > imagedefinitions.json
 artifacts:
     files: imagedefinitions.json
