@@ -6,7 +6,7 @@ phases:
       nodejs: 16
     commands:
       - docker --version
-      - node   --version
+      - node --version
   pre_build:
     commands:
       - echo Logging in to Amazon ECR...
