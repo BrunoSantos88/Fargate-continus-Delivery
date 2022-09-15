@@ -11,17 +11,13 @@ phases:
     commands:
       - echo Logging in to Amazon ECR...
       - aws --version
-      - aws ecr get-login-password --region region us-east-1 | docker login --username AWS --password-stdin 555527584255.dkr.ecr.us-east-1.amazonaws.com
   build:
     commands:
-      - echo Build started on `date`
-      - echo Building the Docker image...
-      - docker build -t 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest .
+      - aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin 555527584255.dkr.ecr.us-east-1.amazonaws.com
+      - docker build -t nginx-docker-delivery .
       - docker tag nginx-docker-delivery:latest 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
   post_build:
     commands:
-      - echo Build completed on `date`
-      - echo Pushing the Docker images...
-      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest:latest
+      - docker push 555527584255.dkr.ecr.us-east-1.amazonaws.com/nginx-docker-delivery:latest
 artifacts:
     files: imagedefinitions.json
